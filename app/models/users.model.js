@@ -15,11 +15,22 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING
     },
+    phone: {
+      type: Sequelize.STRING
+    },
+    address: {
+      type: Sequelize.STRING
+    },
+    description: {
+      type: Sequelize.STRING
+    },
+    
+    
     createdAt:{
       type:'TIMESTAMP',
       defaultValue:Sequelize.STRING,
       field:'created_at'}
-      
+
   });
 
   return Users;
