@@ -7,10 +7,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     desc: {
-      type: Sequelize.BOOLEAN
+      type: Sequelize.STRING
     },
     type: {
-      type: Sequelize.BOOLEAN
+      type: Sequelize.STRING
     }
   });
 
