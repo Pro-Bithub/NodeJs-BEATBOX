@@ -3,7 +3,8 @@ module.exports = app => {
 
   var router = require("express").Router();
 
-
+ // Create a new videos
+ router.post("/", videos.create);
 
   // Retrieve all videos
   router.get("/", videos.findAll);

@@ -2,7 +2,7 @@ const db = require("../models");
 const Users = db.users;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Tutorial
+// Create and Save a new Users
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.username) {

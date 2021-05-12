@@ -4,6 +4,8 @@ module.exports = app => {
   var router = require("express").Router();
 
 
+// Create a new events
+router.post("/", events.create);
 
   // Retrieve all events
   router.get("/", events.findAll);
