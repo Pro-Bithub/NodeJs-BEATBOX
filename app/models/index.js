@@ -22,6 +22,6 @@ db.sequelize = sequelize;
 db.videos = require('./videos.model.js')(sequelize, Sequelize);
 db.events = require('./events.model.js')(sequelize, Sequelize);
 db.reqevents = require('./req-events.model.js')(sequelize, Sequelize);
-db.users = require('./users.model.js')(sequelize, Sequelize);
+db.user = require('./users.model.js')(sequelize, Sequelize);
 
 module.exports = db;

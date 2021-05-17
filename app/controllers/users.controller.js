@@ -1,5 +1,5 @@
 const db = require('../models');
-const Users = db.users;
+const Users = db.user;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Users
@@ -67,7 +67,10 @@ exports.create = (req, res) => {
 		username: req.body.username,
 		password: req.body.password,
 		address: 'address',
-		description: 'description '
+		description: 'description ',
+		instagram: '@instagram ',
+		facebook: '@facebook ',
+		twitter: '@twitter '
 	};
 
 	console.log(users);
@@ -179,7 +182,7 @@ exports.update = (req, res) => {
 		})
 		.catch((err) => {
 			res.status(500).send({
-				message: 'Error updating Tutorial with id=' + id
+				message: 'Error updating Users with id=' + id
 			});
 		});
 };
