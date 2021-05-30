@@ -38,7 +38,9 @@ module.exports = (sequelize, Sequelize) => {
 		description: {
 			type: Sequelize.STRING
 		},
-
+		photo: {
+			type: Sequelize.STRING
+		},
 		createdAt: {
 			type: 'TIMESTAMP',
 			defaultValue: Sequelize.STRING,

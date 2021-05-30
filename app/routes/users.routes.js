@@ -13,6 +13,12 @@ module.exports = (app) => {
 
 	// Retrieve a single users with id
 	router.get('/:id', users.findOne);
+	router.get('/t/ListFiles', users.getListFiles);
+	
+
+
+	router.post('/uploadphoto/:id', users.uploadphoto);
+
 	router.post('/ByUserNameAndpwd', users.findOneByUserNameAndpwd);
 	// Delete a users with id
 	router.delete('/:id', users.delete);

@@ -8,6 +8,8 @@ var corsOptions = {
 	origin: 'http://localhost:4200'
 };
 
+global.__basedir = __dirname;
+
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -28,7 +30,7 @@ db.sequelize.sync();
 app.get('/', (req, res) => {
 	res.json({ message: 'Welcome to beatboxer platforme  application by Hazem Lassoued.' });
 });
-
+app.use('/resources/static/assets/uploads/img/profil', express.static('./resources/static/assets/uploads/img/profil'));
 require('./app/routes/videos.routes')(app);
 require('./app/routes/events.routes')(app);
 require('./app/routes/req-events.routes')(app);
