@@ -1,14 +1,14 @@
-module.exports = app => {
-  const reqevents = require("../controllers/req-events.controller.js");
+module.exports = (app) => {
+	const reqevents = require('../controllers/req-events.controller.js');
 
-  var router = require("express").Router();
+	var router = require('express').Router();
 
+	// Create a new reqevents
+	router.post('/', reqevents.create);
 
-// Create a new reqevents
-router.post("/", reqevents.create);
+	// Retrieve all reqevents
+	router.get('/', reqevents.findAll);
+	router.get('/msg/:msg/:id', reqevents.reqevent);
 
-  // Retrieve all reqevents
-  router.get("/", reqevents.findAll);
-
-  app.use('/api/v1/req-events', router);
+	app.use('/api/v1/req-events', router);
 };

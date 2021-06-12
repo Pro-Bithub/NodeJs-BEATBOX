@@ -1,7 +1,7 @@
 const db = require('../models');
 const Reqevents = db.reqevents;
 const Op = db.Sequelize.Op;
-
+const Events = db.events;
 // Create and Save a new Users
 exports.create = (req, res) => {
 	// Validate request
@@ -79,6 +79,65 @@ exports.findAll = (req, res) => {
 		.catch((err) => {
 			res.status(500).send({
 				message: err.message || 'Some error occurred while retrieving reqevents.'
+			});
+		});
+};
+
+// Update a Users by the id in the request
+exports.reqevent = (req, res) => {
+	const msg = req.params.msg;
+	const id = req.params.id;
+
+	Reqevents.findByPk(id)
+		.then((data) => {
+			/* 		const Eventsindb = data;
+			Eventsindb.response = msg; */
+
+			const Eventsindb = {
+				response: msg
+			};
+
+			console.log('Eventsindb');
+			console.log(Eventsindb);
+			Reqevents.update(Eventsindb, {
+				where: { id: id }
+			})
+				.then((num) => {
+					if (num == 1) {
+						if (msg == 'accepted') {
+							const events = {
+								title: data.eventname,
+								desc: '...',
+								createdby: data.name
+							};
+							Events.create(events)
+								.then((data) => {
+									res.send(data);
+								})
+								.catch((err) => {
+									res.status(500).send({
+										message: err.message || 'Some error occurred while creating the Events.'
+									});
+								});
+						}
+						res.send({
+							message: 'reqevent  was updated successfully!'
+						});
+					} else {
+						res.send({
+							message: `Cannot update Events with id=${id}. Maybe Events was not found or req.body is empty!`
+						});
+					}
+				})
+				.catch((err) => {
+					res.status(500).send({
+						message: 'Error updating Events with id=' + id
+					});
+				});
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: 'Error retrieving Users with id=' + id
 			});
 		});
 };

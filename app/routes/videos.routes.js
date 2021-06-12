@@ -10,5 +10,7 @@ module.exports = (app) => {
 	router.get('/', videos.findAll);
 	// Delete a users with id
 	router.delete('/:id', videos.delete);
+	router.get('/by/user/:id', videos.findAllbyuser);
+
 	app.use('/api/v1/videos', router);
 };

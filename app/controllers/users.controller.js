@@ -1,9 +1,9 @@
 const db = require('../models');
 const Users = db.user;
 const Op = db.Sequelize.Op;
-const uploadFile = require("../middleware/upload");
+const uploadFile = require('../middleware/upload');
 
-const fs = require('fs')
+const fs = require('fs');
 // Create and Save a new Users
 exports.create = (req, res) => {
 	// Validate request
@@ -111,7 +111,25 @@ exports.findAll_name_date = (req, res) => {
 		where: condition,
 		attributes: [ 'username', 'createdAt' ]
 	} */
-	Users.findAll({ attributes: [ 'id', 'name', 'createdAt' ,'photo'] })
+	Users.findAll({ attributes: [ 'id', 'name', 'createdAt', 'photo' ] })
+		.then((data) => {
+			res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: err.message || 'Some error occurred while retrieving Users.'
+			});
+		});
+};
+exports.findAll_info_users = (req, res) => {
+	const title = req.query.title;
+	var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+	/*   {
+		where: condition,
+		attributes: [ 'username', 'createdAt' ]
+	} */
+
+	Users.findAll({ attributes: [ 'id', 'email', 'username', 'createdAt', 'photo' ] })
 		.then((data) => {
 			res.send(data);
 		})
@@ -138,81 +156,79 @@ exports.findOne = (req, res) => {
 };
 
 exports.getListFiles = (req, res) => {
-	console.log("getListFiles")
-	const directoryPath = __basedir + "/resources/static/assets/uploads/";
-  
-	fs.readdir(directoryPath, function (err, files) {
-	  if (err) {
-		res.status(500).send({
-		  message: "Unable to scan files!",
-		});
-	  }
-  
-	  let fileInfos = [];
-	  const baseUrl = "http://localhost:8080/files/";
-	  files.forEach((file) => {
-		fileInfos.push({
-		  name: file,
-		  url: baseUrl + file,
-		});
-	  });
-  
-	  res.status(200).send(fileInfos);
-	});
-  };
-  
-exports.uploadphoto = async (req, res) => {
-    const id = req.params.id;
-	var imagedata = '';
-	try {
-		await  uploadFile(req, res);
+	console.log('getListFiles');
+	const directoryPath = __basedir + '/resources/static/assets/uploads/';
 
-	const chars = req.file.originalname.split('.');
-	console.log(	__basedir + '/resources/static/assets/uploads/img/profil/img'+id+"."+chars[1] )
-	var values = {photo: 'img'+id+"."+chars[1] };
-	var condition = { 	where: { id: id } }; 
-	options = { multi: true }
-
-	Users.update(values, condition , options)	.then((num) => {
-		if (num == 1) {
-			Users.findByPk(id)
-				.then((data) => {
-					res.send(data);
-				})
-				.catch((err) => {
-					res.status(500).send({
-						message: 'Error retrieving Users with id=' + id
-					});
-				});
-		} else {
-			res.send({
-				message: `Cannot update Users with id=${id}. Maybe Users was not found or req.body is empty!`
+	fs.readdir(directoryPath, function(err, files) {
+		if (err) {
+			res.status(500).send({
+				message: 'Unable to scan files!'
 			});
 		}
-	})
-	.catch((err) => {
-		res.status(500).send({
-			message: 'Error updating Users with id=' + id
-		});
-	});
-	/* 	if (req.file == undefined) {
-		  return res.status(400).send({ message: "Please upload a file!" });
-		} */
-	//+ req.file.originalname ${req.file.originalname}
-	/* 	res.status(200).send({
-		  message: "Uploaded the file successfully: " ,
-		}); */
-	  } catch (err) {
-		console.log("err")
-		  console.log(err)
-		res.status(500).send({
-		  message: `Could not upload the file: . ${err}`,
-		});
-	  }
 
+		let fileInfos = [];
+		const baseUrl = 'http://localhost:8080/files/';
+		files.forEach((file) => {
+			fileInfos.push({
+				name: file,
+				url: baseUrl + file
+			});
+		});
+
+		res.status(200).send(fileInfos);
+	});
 };
 
+exports.uploadphoto = async (req, res) => {
+	const id = req.params.id;
+	var imagedata = '';
+	try {
+		await uploadFile(req, res);
 
+		const chars = req.file.originalname.split('.');
+		console.log(__basedir + '/resources/static/assets/uploads/img/profil/img' + id + '.' + chars[1]);
+		var values = { photo: 'img' + id + '.' + chars[1] };
+		var condition = { where: { id: id } };
+		options = { multi: true };
+
+		Users.update(values, condition, options)
+			.then((num) => {
+				if (num == 1) {
+					Users.findByPk(id)
+						.then((data) => {
+							res.send(data);
+						})
+						.catch((err) => {
+							res.status(500).send({
+								message: 'Error retrieving Users with id=' + id
+							});
+						});
+				} else {
+					res.send({
+						message: `Cannot update Users with id=${id}. Maybe Users was not found or req.body is empty!`
+					});
+				}
+			})
+			.catch((err) => {
+				res.status(500).send({
+					message: 'Error updating Users with id=' + id
+				});
+			});
+		/* 	if (req.file == undefined) {
+		  return res.status(400).send({ message: "Please upload a file!" });
+		} */
+		//+ req.file.originalname ${req.file.originalname}
+		/* 	res.status(200).send({
+		  message: "Uploaded the file successfully: " ,
+		}); */
+	} catch (err) {
+		console.log('err');
+		console.log(err);
+		res.status(500).send({
+			message: `Could not upload the file: . ${err}`
+		});
+	}
+};
 
 exports.findOneByUserNameAndpwd = (req, res) => {
 	const username = req.body.username;

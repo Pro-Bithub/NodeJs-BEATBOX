@@ -67,6 +67,22 @@ exports.findAll = (req, res) => {
 			});
 		});
 };
+exports.findAllbyuser = (req, res) => {
+
+	const id = req.params.id;
+	
+
+	Videos.findAll({ 	where: { iduser: id } })
+		.then((data) => {
+			res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: err.message || 'Some error occurred while retrieving Videos.'
+			});
+		});
+};
+
 // Delete a Users with the specified id in the request
 exports.delete = (req, res) => {
 	const id = req.params.id;

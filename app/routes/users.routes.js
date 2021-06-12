@@ -10,12 +10,11 @@ module.exports = (app) => {
   router.get("/", users.findAll); */
 	// Retrieve all users
 	router.get('/', users.findAll_name_date);
+	router.get('/info', users.findAll_info_users);
 
 	// Retrieve a single users with id
 	router.get('/:id', users.findOne);
 	router.get('/t/ListFiles', users.getListFiles);
-	
-
 
 	router.post('/uploadphoto/:id', users.uploadphoto);
 

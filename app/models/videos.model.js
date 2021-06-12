@@ -11,7 +11,10 @@ module.exports = (sequelize, Sequelize) => {
     },
     type: {
       type: Sequelize.STRING
-    }
+    },
+    iduser: {
+			type: Sequelize.STRING
+		},
   });
 
   return Videos;
